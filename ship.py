@@ -6,7 +6,7 @@ class Ship():
         # Initialise the ship and the screen
         self.screen = screen
         self.aw_settings = aw_settings
-        self.image = pygame.image.load('pictures/hero.png')
+        self.image = pygame.image.load(aw_settings.aircraft)
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
