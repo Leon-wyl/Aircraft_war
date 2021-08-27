@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 import pygame
+import game_function as gf
 from settings import Settings
 from ship import Ship
 
@@ -14,16 +15,12 @@ def run_game():
     bg = pygame.image.load(aw_settings.bg_image)
 
     # Create a ship
-    ship = Ship(screen)
+    ship = Ship(screen, aw_settings)
 
     while True:
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
+        gf.check_events(ship)
+        ship.update()
+        gf.update_screen(bg, screen, ship)
 
-        screen.blit(bg,(0,0))
-        ship.blitme()
-        pygame.display.flip()
 
 run_game()
