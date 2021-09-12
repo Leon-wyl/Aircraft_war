@@ -6,8 +6,8 @@ class Ship():
         # Initialise the ship and the screen
         self.screen = screen
         self.aw_settings = aw_settings
-        self.image = pygame.image.load(aw_settings.aircraft)
-        self.rect = self.image.get_rect()
+        self.image_ship = pygame.image.load(aw_settings.aircraft)
+        self.rect = self.image_ship.get_rect()
         self.screen_rect = screen.get_rect()
 
         # Initialize the position of the ship
@@ -24,7 +24,7 @@ class Ship():
         self.moving_down = False
 
     def blitme(self):
-        self.screen.blit(self.image, self.rect)
+        self.screen.blit(self.image_ship, self.rect)
     
     def update(self):
         if self.moving_right and self.rect.right < self.screen_rect.right:

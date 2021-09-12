@@ -8,3 +8,5 @@ class Settings():
         self.bg_image = "pictures/background.png"
         self.ship_speed_factor = 1.5
         self.aircraft = "pictures/hero.png"
+        self.bullet = "pictures/bullet1.png"
+        self.bullet_speed_factor = 1
