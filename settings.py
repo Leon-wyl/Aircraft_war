@@ -10,3 +10,4 @@ class Settings():
         self.aircraft = "pictures/hero.png"
         self.bullet = "pictures/bullet1.png"
         self.bullet_speed_factor = 1
+        self.bullet_countdown = 0.2
