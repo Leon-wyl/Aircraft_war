@@ -28,6 +28,7 @@ def run_game():
         ship.update()
         bullets.bullet_add(aw_settings, screen, ship)
         bullets.update()
+        bullets.bullet_delete()
 
         # Update the screen
         gf.update_screen(bg, screen, ship, bullets)

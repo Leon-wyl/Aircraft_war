@@ -5,6 +5,7 @@ from bullet import Bullet
 from datetime import datetime
 
 class Bullets(Group):
+    """A class managing the groups of bullets"""
 
     def __init__(self):
         super(Bullets, self).__init__()
@@ -24,4 +25,9 @@ class Bullets(Group):
             new_bullet = Bullet(aw_settings, screen, ship)
             self.add(new_bullet)
             self.last_add_time = datetime.now()
+
+    def bullet_delete(self):
+        for bullet in self:
+            if bullet.rect.bottom <= 0:
+                self.remove(bullet)
             
