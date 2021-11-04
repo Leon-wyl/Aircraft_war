@@ -1,6 +1,7 @@
 import sys
 import pygame
 from bullet import Bullet
+from enemy import Enemy
 
 def check_keydown_event(event, aw_settings, screen, ship, bullets):
     if event.key == pygame.K_RIGHT:
@@ -14,6 +15,8 @@ def check_keydown_event(event, aw_settings, screen, ship, bullets):
     elif event.key == pygame.K_SPACE:
         bullets.firing = True
         bullets.loading = True
+    elif event.key == pygame.K_SPACE:
+        sys.exit()
 
 def check_keyup_event(event, ship, bullets):
     if event.key == pygame.K_RIGHT:
@@ -37,14 +40,50 @@ def check_events(aw_settings, screen, ship, bullets):
             check_keyup_event(event, ship, bullets)
 
 
-def update_screen(bg, screen, ship, bullets):
+def update_screen(bg, screen, ship, bullets, enemies):
     screen.blit(bg,(0,0))
     for bullet in bullets.sprites():
         bullet.blitme()
     ship.blitme()
+    enemies.draw(screen)
     pygame.display.flip()
 
 def bullet_delete(bullets):
     for bullet in bullets:
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+
+def create_enemies_fleet(aw_settings, screen, ship, enemies):
+    """Create a group of enemies"""
+    # create an enemy, calculate how many enemies a line can have
+    # distance between enemies are twice the width of enemy
+    enemy = Enemy(aw_settings, screen)
+    enemy_width = enemy.rect.width
+    num_enemy_per_line = get_number_enemies_per_line(aw_settings, enemy_width)
+    num_rows = get_number_rows(aw_settings, ship.rect.height, enemy.rect.height)
+
+    # Create the first line of enemy
+    for row_number in range(num_rows):
+        for enemy_number in range(num_enemy_per_line):
+            create_enemy(aw_settings, screen, enemies, enemy_number, row_number)
+
+def get_number_enemies_per_line(aw_settings, enemy_width):
+    available_space_per_line = aw_settings.screen_width - 4 * enemy_width
+    num_enemy_per_line = int(available_space_per_line)
+    return num_enemy_per_line
+
+def get_number_rows(aw_settings, ship_height, enemy_height):
+    """Calculate how many lines of enemies can be shown on the screen"""
+    available_space_height = (aw_settings.screen_height - 3 * enemy_height - ship_height)
+    num_rows = int(available_space_height / 2 * (enemy_height))
+    return num_rows
+
+
+def create_enemy(aw_settings, screen, enemies, enemy_number, row_number):
+    enemy = Enemy(aw_settings, screen)
+    enemy_width = enemy.rect.width
+    enemy.x = 0.5 * enemy_width + 2 * enemy_width * enemy_number
+    enemy.rect.x = enemy.x
+    enemy.rect.y = enemy.rect.height + 2 * enemy.rect.height * row_number
+    enemies.add(enemy)
+
