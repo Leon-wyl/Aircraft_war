@@ -2,6 +2,7 @@ import sys
 import pygame
 from bullet import Bullet
 from enemy import Enemy
+from random import randint
 
 def check_keydown_event(event, aw_settings, screen, ship, bullets):
     if event.key == pygame.K_RIGHT:
@@ -62,20 +63,22 @@ def create_enemies_fleet(aw_settings, screen, ship, enemies):
     num_enemy_per_line = get_number_enemies_per_line(aw_settings, enemy_width)
     num_rows = get_number_rows(aw_settings, ship.rect.height, enemy.rect.height)
 
-    # Create the first line of enemy
+    # Create lines of enemy
     for row_number in range(num_rows):
         for enemy_number in range(num_enemy_per_line):
-            create_enemy(aw_settings, screen, enemies, enemy_number, row_number)
+            random_number = randint(0, num_enemy_per_line)
+            if (random_number > num_enemy_per_line / 1.5):
+                create_enemy(aw_settings, screen, enemies, enemy_number, row_number)
 
 def get_number_enemies_per_line(aw_settings, enemy_width):
-    available_space_per_line = aw_settings.screen_width - 4 * enemy_width
-    num_enemy_per_line = int(available_space_per_line)
+    available_space_per_line = aw_settings.screen_width - 1.5 * enemy_width
+    num_enemy_per_line = int(available_space_per_line / (1.5 * enemy_width))
     return num_enemy_per_line
 
 def get_number_rows(aw_settings, ship_height, enemy_height):
     """Calculate how many lines of enemies can be shown on the screen"""
     available_space_height = (aw_settings.screen_height - 3 * enemy_height - ship_height)
-    num_rows = int(available_space_height / 2 * (enemy_height))
+    num_rows = int(available_space_height / (2 * enemy_height))
     return num_rows
 
 

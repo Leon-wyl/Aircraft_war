@@ -7,7 +7,7 @@ class Enemy(Sprite):
         self.screen = screen
         self.aw_settings = aw_settings
         # Load enemy picture and set it as an rect
-        self.image = pygame.image.load_extended('pictures/enemy1.png')
+        self.image = pygame.image.load('pictures/enemy1.png')
         self.rect = self.image.get_rect()
         # Set the rect locate on the upper left of the screen
         self.rect.x = self.rect.width
