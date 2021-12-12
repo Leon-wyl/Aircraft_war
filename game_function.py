@@ -54,6 +54,15 @@ def bullet_delete(bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
+def update_bullets(bullets, aw_settings, screen, ship, enemies):
+    bullets.bullet_add(aw_settings, screen, ship)
+    bullets.update()
+    collisions = pygame.sprite.groupcollide(bullets, enemies, True, True)
+    if len(enemies) == 0:
+        bullets.empty()
+        create_enemies_fleet(aw_settings, screen, ship, enemies)
+    bullets.bullet_delete()
+
 def create_enemies_fleet(aw_settings, screen, ship, enemies):
     """Create a group of enemies"""
     # create an enemy, calculate how many enemies a line can have
@@ -69,10 +78,11 @@ def create_enemies_fleet(aw_settings, screen, ship, enemies):
             random_number = randint(0, num_enemy_per_line)
             if (random_number > num_enemy_per_line / 1.5):
                 create_enemy(aw_settings, screen, enemies, enemy_number, row_number)
+                print("created")
 
 def get_number_enemies_per_line(aw_settings, enemy_width):
     available_space_per_line = aw_settings.screen_width - 1.5 * enemy_width
-    num_enemy_per_line = int(available_space_per_line / (1.5 * enemy_width))
+    num_enemy_per_line = int(available_space_per_line / (1.5 * enemy_width)) - 1
     return num_enemy_per_line
 
 def get_number_rows(aw_settings, ship_height, enemy_height):
@@ -87,6 +97,10 @@ def create_enemy(aw_settings, screen, enemies, enemy_number, row_number):
     enemy_width = enemy.rect.width
     enemy.x = 0.5 * enemy_width + 2 * enemy_width * enemy_number
     enemy.rect.x = enemy.x
-    enemy.rect.y = enemy.rect.height + 2 * enemy.rect.height * row_number
+    enemy.y = enemy.rect.height + 2 * enemy.rect.height * row_number
+    enemy.rect.y = enemy.y
     enemies.add(enemy)
 
+def update_enemies(enemies):
+    enemies.update()
+    enemies.delete()

@@ -14,7 +14,18 @@ class Enemy(Sprite):
         self.rect.y = self.rect.height
         # Store the location
         self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
+
+    def update(self):
+        self.y += self.aw_settings.enemy_speed_factor
+        self.rect.y = self.y
+
+    def check_edges(self):
+        screen_rect = self.screen.get_rect()
+        if self.rect.bottom >= screen_rect.bottom:
+            return True
+        
 
