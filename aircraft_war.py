@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 import sys
+from typing import AsyncIterable
 import pygame
 from enemies import Enemies
 import game_function as gf
+from game_stats import GameStats
 from settings import Settings
 from ship import Ship
 from bullets import Bullets
@@ -14,6 +16,7 @@ def run_game():
     aw_settings = Settings()
     screen = pygame.display.set_mode((aw_settings.screen_width, aw_settings.screen_height))
     pygame.display.set_caption("Aircraft War")
+    stats = GameStats(aw_settings)
 
     bg = pygame.image.load(aw_settings.bg_image)
 
@@ -24,24 +27,14 @@ def run_game():
     # Create enemy
     enemies = Enemies()
     gf.create_enemies_fleet(aw_settings, screen, ship, enemies)
-    for enemy in enemies:
-        print(enemy.rect.y)
-    gf.update_enemies(enemies)
-    for enemy in enemies:
-        print(enemy.rect.y)
 
     while True:
         # Check what event has happened
         gf.check_events(aw_settings, screen, ship, bullets)
-
-        # Update the state of the ship and bullets according to the event
-        ship.update()
-
-        gf.update_bullets(bullets, aw_settings, screen, ship, enemies)
-
-        # Update positions of the enemies
-        gf.update_enemies(enemies)
-
+        if stats.game_state:
+            ship.update()
+            gf.update_bullets(bullets, aw_settings, screen, ship, enemies)
+            gf.update_enemies(aw_settings, stats, screen, enemies, ship, bullets)
         # Update the screen
         gf.update_screen(bg, screen, ship, bullets, enemies)
 

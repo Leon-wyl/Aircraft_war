@@ -22,10 +22,3 @@ class Enemy(Sprite):
     def update(self):
         self.y += self.aw_settings.enemy_speed_factor
         self.rect.y = self.y
-
-    def check_edges(self):
-        screen_rect = self.screen.get_rect()
-        if self.rect.bottom >= screen_rect.bottom:
-            return True
-        
-

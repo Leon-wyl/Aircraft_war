@@ -12,3 +12,4 @@ class Settings():
         self.bullet_speed_factor = 1
         self.bullet_countdown = 0.2
         self.enemy_speed_factor = 0.2
+        self.ship_limit = 3

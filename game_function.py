@@ -3,6 +3,7 @@ import pygame
 from bullet import Bullet
 from enemy import Enemy
 from random import randint
+from time import sleep
 
 def check_keydown_event(event, aw_settings, screen, ship, bullets):
     if event.key == pygame.K_RIGHT:
@@ -78,7 +79,6 @@ def create_enemies_fleet(aw_settings, screen, ship, enemies):
             random_number = randint(0, num_enemy_per_line)
             if (random_number > num_enemy_per_line / 1.5):
                 create_enemy(aw_settings, screen, enemies, enemy_number, row_number)
-                print("created")
 
 def get_number_enemies_per_line(aw_settings, enemy_width):
     available_space_per_line = aw_settings.screen_width - 1.5 * enemy_width
@@ -101,6 +101,28 @@ def create_enemy(aw_settings, screen, enemies, enemy_number, row_number):
     enemy.rect.y = enemy.y
     enemies.add(enemy)
 
-def update_enemies(enemies):
+def update_enemies(aw_settings, stats, screen, enemies, ship, bullets):
     enemies.update()
+    if pygame.sprite.spritecollideany(ship, enemies):
+        ship_hit_operations(aw_settings, stats, screen, enemies, ship, bullets)
+    check_enemy_bottom(aw_settings, stats, screen, enemies, ship, bullets)
     enemies.delete()
+
+def ship_hit_operations(aw_settings, stats, screen, enemies, ship, bullets):
+    if stats.ships_left > 0:
+        stats.ships_left -= 1
+        enemies.empty()
+        bullets.empty()
+        create_enemies_fleet(aw_settings, screen, ship, enemies)
+        ship.position_init()
+        sleep(0.5)
+    else:
+        stats.game_state = False
+        quit()
+
+def check_enemy_bottom(aw_settings, stats, screen, enemies, ship, bullets):
+    screen_rect = screen.get_rect()
+    for enemy in enemies:
+        if enemy.rect.bottom > screen_rect.bottom:
+            ship_hit_operations(aw_settings, stats, screen, enemies, ship, bullets)
+            break

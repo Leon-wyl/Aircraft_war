@@ -10,12 +10,7 @@ class Ship():
         self.rect = self.image_ship.get_rect()
         self.screen_rect = screen.get_rect()
 
-        # Initialize the position of the ship
-        self.rect.centerx = self.screen_rect.centerx
-        self.rect.bottom = self.screen_rect.bottom
-
-        self.centerx = float(self.rect.centerx)
-        self.centery = float(self.rect.centery)
+        self.position_init()
         
         # Moving marks
         self.moving_right = False
@@ -38,4 +33,11 @@ class Ship():
 
         self.rect.centerx = self.centerx
         self.rect.centery = self.centery
+    
+    def position_init(self):
+        """Initialize the position of the ship"""
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom
+        self.centerx = float(self.rect.centerx)
+        self.centery = float(self.rect.centery)
     
